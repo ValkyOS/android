@@ -1,36 +1,151 @@
-LineageOS
-===========
+ValkyOS
+=======
 
-Getting started
----------------
+ValkyOS is an independent Android ROM based on **LineageOS 24.0 (Android 17)** that
+adds privacy and security features ported from **GrapheneOS**. The main feature is
+sandboxed Google Play (GmsCompat): Play Store and Play services run as regular,
+unprivileged apps.
 
-To get started with Android/LineageOS, you'll need to get familiar with [Source Control Tools](https://source.android.com/setup/develop).
+This repository (`ValkyOS/android`, branch `17`) is the **ValkyOS manifest**. It is
+LineageOS's manifest plus [`snippets/valkyos.xml`](snippets/valkyos.xml), which:
 
-To initialize your local repository using the LineageOS trees, use a command like this:
+- replaces the projects ValkyOS changes with its forks (branch `valkyos-17`);
+- adds `vendor/valkyos`, GmsCompat, GmsCompatConfig, the GrapheneOS App Store and
+  Vanadium.
+
+The rest of `default.xml` is exactly LineageOS's, so the monthly LineageOS security
+patch merges cleanly.
+
+Building ValkyOS is the same as building LineageOS: only the manifest URL changes.
+If you have built LineageOS before, you already know the steps.
+
+
+What you need
+-------------
+
+- The Android `repo` tool, Git and Git LFS, and the usual LineageOS build
+  requirements: <https://wiki.lineageos.org/>.
+- Device sources for your phone that already work on LineageOS 24 (Android 17):
+  device tree, kernel and vendor blobs. For a phone supported by LineageOS this is
+  automatic; for a phone that is not, you need a local manifest (see below).
+
+
+Sync
+----
+
+```bash
+mkdir -p ~/valkyos && cd ~/valkyos
+repo init -u https://github.com/ValkyOS/android -b 17 --git-lfs
+repo sync -c -j8
 ```
-repo init -u https://github.com/LineageOS/android.git -b lineage-24.0 --git-lfs
+
+Do **not** use `LineageOS/android` here: the manifest is this repository.
+
+
+Add your phone
+--------------
+
+**Phone supported by LineageOS.** The usual flow works:
+
+```bash
+source build/envsetup.sh
+breakfast <device>
 ```
-Then to sync up:
+
+`breakfast` downloads the device tree, kernel and vendor blobs and creates the local
+manifest.
+
+**Phone not supported by LineageOS** (or with a custom device tree, like the
+Motorola Edge 50 Pro): put a normal `repo` local manifest in
+`.repo/local_manifests/`. It must contain the device tree, kernel, vendor blobs and
+any device-only extras.
+
+The Edge 50 Pro example is [`dvy-jp/local_manifests`](https://github.com/dvy-jp/local_manifests)
+(branch `valkyos-17`, file `eqe.xml`):
+
+```bash
+git clone https://github.com/dvy-jp/local_manifests -b valkyos-17 .repo/local_manifests
+repo sync -c -j8
 ```
-repo sync
+
+Use it as a model for your own phone: the file is a plain `repo` local manifest, with
+the exact revisions of the device tree, kernel and vendor sources.
+
+
+Make your device inherit ValkyOS
+--------------------------------
+
+In your `lineage_<device>.mk`, inherit the ValkyOS common configuration:
+
+```make
+$(call inherit-product, vendor/valkyos/config/common.mk)
 ```
-Please see the [LineageOS Wiki](https://wiki.lineageos.org/) for building instructions, by device.
+
+That adds:
+
+- the ValkyOS name and version (`ro.valkyos.*`), with the LineageOS build machinery;
+- ValkyOS overlays (including the WebView provider and other system defaults);
+- the ValkyOS wallpapers;
+- GmsCompat (sandboxed Google Play), the GrapheneOS App Store and Vanadium;
+- the ValkyOS recovery logo and boot animation.
+
+A device tree may still set its own boot animation or screen width; `TARGET_BOOTANIMATION`
+is only a default.
 
 
-Submitting patches
-------------------
-Patches are always welcome! Please submit your patches via LineageOS Gerrit!
+Signing keys
+------------
 
-Simply follow our guide on [how to submit patches](https://wiki.lineageos.org/submitting-patch-howto.html).
+Generate your **own** signing keys following the LineageOS signing procedure and keep
+them in `vendor/lineage-priv/keys` (or the directory configured for your build).
+Never use someone else's keys: the ROM would be signed by a stranger, and OTA and
+verified boot trust would be wrong.
 
-To view the status of your and others' patches, visit [LineageOS Gerrit Code Review](https://review.lineageos.org/).
+Keys are private: never commit them, never upload them, never share them.
 
 
-Buildbot
---------
+Build
+-----
 
-All supported devices are built weekly and periodically as changes are committed to ensure the source trees remain buildable.
+```bash
+source build/envsetup.sh
+brunch <device>
+```
 
-You can view the current build statuses at [LineageOS Buildkite](https://buildkite.com/lineageos).
+The update package is `out/target/product/<device>/ValkyOS-<version>.zip` (the
+LineageOS name is kept as a hard link to the same file).
 
-Builds produced weekly by the buildbot can be downloaded from [LineageOS downloads](https://download.lineageos.org/).
+
+What ValkyOS adds
+-----------------
+
+- **Sandboxed Google Play (GmsCompat)**, ported from GrapheneOS: Play Store and Play
+  services are regular, unprivileged apps. Sign-in, app installs and updates, push
+  notifications, Google sign-in inside apps and location rerouted to the OS work.
+- **Contact Scopes, Storage Scopes and the Sensors permission**, from GrapheneOS.
+- **Vanadium** (GrapheneOS browser and WebView) and the **GrapheneOS App Store**.
+- **Per-user options**, **GrapheneOS connectivity checks** and the **Play Integrity API
+  notification and per-app blocking** (nothing is spoofed).
+- **ValkyOS branding**: name in Settings and About phone, logo, seven wallpapers, no
+  LineageOS statistics, and an Updater with the ValkyOS name and version.
+
+
+Limitations
+-----------
+
+- The bootloader must stay unlocked (for example, Motorola does not support a custom
+  root of trust), so verified boot reports **orange**.
+- **Play Integrity is not promised**; apps that require it may refuse to run.
+- Sandboxed Google Play must be installed and updated through the GrapheneOS App Store
+  (or `adb`), not by arbitrary installers.
+- Postponed in GmsCompat: Google Camera client overrides and Android Auto.
+
+
+Credits
+-------
+
+- [LineageOS](https://lineageos.org/): the base.
+- [GrapheneOS](https://grapheneos.org/): GmsCompat and the privacy/security features.
+
+ValkyOS is an independent project and is **not** affiliated with or endorsed by
+LineageOS or GrapheneOS.
