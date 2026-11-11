@@ -112,8 +112,8 @@ source build/envsetup.sh
 brunch <device>
 ```
 
-The update package is `out/target/product/<device>/ValkyOS-<version>.zip` (the
-LineageOS name is kept as a hard link to the same file).
+The update package is `out/target/product/<device>/ValkyOS-<version>.zip` (no
+`lineage-` prefix).
 
 
 What ValkyOS adds
@@ -127,7 +127,8 @@ What ValkyOS adds
 - **Per-user options**, **GrapheneOS connectivity checks** and the **Play Integrity API
   notification and per-app blocking** (nothing is spoofed).
 - **ValkyOS branding**: name in Settings and About phone, logo, seven wallpapers, no
-  LineageOS statistics, and an Updater with the ValkyOS name and version.
+  LineageOS statistics, an Updater with the ValkyOS name and version, and no LineageOS
+  legal or contributors entries in About phone.
 
 
 Limitations
