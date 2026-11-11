@@ -131,6 +131,21 @@ What ValkyOS adds
   legal or contributors entries in About phone.
 
 
+Privacy
+-------
+
+ValkyOS itself collects no data and runs no servers of its own.
+
+- The LineageOS anonymous statistics are disabled and hidden; nothing is sent to
+  stats.lineageos.org.
+- System updates have no update server yet, so the Updater makes no requests.
+- Internet connectivity checks use GrapheneOS servers by default (Settings > Network &
+  internet lets you choose GrapheneOS, standard Google servers, or off).
+- The GrapheneOS App Store and Vanadium check GrapheneOS servers for updates.
+- Network time still uses the standard Android server (time.android.com).
+- Google Play is optional and sandboxed; if you install it, Google's own policies apply
+  to it.
+
 Limitations
 -----------
 
