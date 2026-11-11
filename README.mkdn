@@ -157,6 +157,18 @@ Limitations
 - Postponed in GmsCompat: Google Camera client overrides and Android Auto.
 
 
+Creator
+-------
+
+ValkyOS is created and maintained by [dvy-jp](https://github.com/dvy-jp).
+
+Support the project
+-------------------
+
+If ValkyOS is useful to you, you can support its development on
+[Ko-fi](https://ko-fi.com/dvyjp).
+
+
 Credits
 -------
 
