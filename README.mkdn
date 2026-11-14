@@ -142,15 +142,19 @@ ValkyOS itself collects no data and runs no servers of its own.
 - Internet connectivity checks use GrapheneOS servers by default (Settings > Network &
   internet lets you choose GrapheneOS, standard Google servers, or off).
 - The GrapheneOS App Store and Vanadium check GrapheneOS servers for updates.
-- Network time still uses the standard Android server (time.android.com).
+- Network time is fetched over HTTPS from `time.grapheneos.org`.
+- Assisted GPS (SUPL) goes through the GrapheneOS proxy by default (it can be switched to
+  the standard server in Location settings).
+- Wi-Fi uses a new random MAC address for every connection.
 - Google Play is optional and sandboxed; if you install it, Google's own policies apply
   to it.
 
 Limitations
 -----------
 
-- The bootloader must stay unlocked (for example, Motorola does not support a custom
-  root of trust), so verified boot reports **orange**.
+- On the Motorola Edge 50 Pro (eqe) the bootloader can be locked again with the ValkyOS
+  AVB key (custom root of trust); verified boot then reports **yellow**. On other devices,
+  or without your own key, it stays unlocked and reports **orange**.
 - **Play Integrity is not promised**; apps that require it may refuse to run.
 - Sandboxed Google Play must be installed and updated through the GrapheneOS App Store
   (or `adb`), not by arbitrary installers.
