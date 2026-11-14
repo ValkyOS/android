@@ -74,7 +74,7 @@
              remote="valkyos"
              groups="pdk-fs,pdk-cw-tvc,sysui-studio"
              upstream="valkyos-17"
-             revision="161c895d9f78520f16ded0b39dd7041682800a1f" />
+             revision="4fb68ef074e692e6dbe5bb78ca5a1cae41692881" />
 
     <!-- LineageParts: no LineageOS contributors screen in About phone > Legal. -->
     <remove-project name="LineageOS/android_packages_apps_LineageParts" />
@@ -193,6 +193,16 @@
              groups="pdk,sysui-studio"
              upstream="valkyos-17"
              revision="f2914a9c72a0b0c4782d033f90412ca62c465e89" />
+
+    <!-- Qualcomm power HAL: optional skip of the launch hint (devices whose vendor
+         already boosts app launches, like Motorola LightningLaunch). -->
+    <remove-project name="LineageOS/android_vendor_qcom_opensource_power" />
+    <project path="vendor/qcom/opensource/power"
+             name="android_vendor_qcom_opensource_power"
+             remote="valkyos"
+             groups="qcom,kaanapali-vendor"
+             upstream="valkyos-17"
+             revision="f9507ba63d98fbb2114606ece6d63dadbbc32818" />
 
     <!-- Internet connectivity checks setting (GrapheneOS servers by default). -->
     <remove-project name="platform/packages/modules/NetworkStack" />
