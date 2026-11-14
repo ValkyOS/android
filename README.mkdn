@@ -129,6 +129,10 @@ What ValkyOS adds
 - **ValkyOS branding**: name in Settings and About phone, logo, seven wallpapers, no
   LineageOS statistics, an Updater with the ValkyOS name and version, and no LineageOS
   legal or contributors entries in About phone.
+- **Network privacy from GrapheneOS**: network time over HTTPS, a new random Wi-Fi MAC
+  address for every connection and assisted GPS through the GrapheneOS SUPL proxy.
+- **Lock screen clock styles** from crDroid (67 styles), with a picker that previews
+  each one over your wallpaper (Settings > Lock screen > Clock style).
 
 
 Privacy
@@ -178,6 +182,7 @@ Credits
 
 - [LineageOS](https://lineageos.org/): the base.
 - [GrapheneOS](https://grapheneos.org/): GmsCompat and the privacy/security features.
+- [crDroid](https://crdroid.net/): the lock screen clock styles and their picker.
 
 ValkyOS is an independent project and is **not** affiliated with or endorsed by
 LineageOS or GrapheneOS.
